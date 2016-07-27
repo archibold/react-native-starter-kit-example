@@ -20,7 +20,6 @@ export function changeText(text) {
         const state = getState();
         const { value } = state.screen;
         const newValue = value + text;
-
         dispatch(setValue(newValue));
     };
 }
