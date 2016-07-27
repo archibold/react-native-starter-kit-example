@@ -15,8 +15,9 @@ class App extends React.Component {
 
     render() {
         return (
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
                 <ScrollableTabView renderTabBar={() => (<TabBar />)}>
+                    <Screen tabLabel="check" />
                     <ScrollView tabLabel="clock-o">
                         <View>
                             <Text>News</Text>
@@ -32,7 +33,6 @@ class App extends React.Component {
                             <Text>News</Text>
                         </View>
                     </ScrollView>
-                    <Screen tabLabel="check" />
                 </ScrollableTabView>
                 <ActionButton
                   buttonColor="#34495e"

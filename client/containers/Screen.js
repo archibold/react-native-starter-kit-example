@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { increment, reset, changeText } from '../services/screen';
 
 import Button from '../components/Button';
+import Card from '../components/Card';
 
 import {
     StyleSheet,
     View,
     Text,
+    ScrollView,
 } from 'react-native';
 
 class Screen extends React.Component {
@@ -24,20 +26,14 @@ class Screen extends React.Component {
         const { counter, buttonText } = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!
-                </Text>
-                <View style={styles.buttonView}>
-                    <Button onClick={this.onIncrement} text={counter} />
-                    <Button
-                      onClick={this.onChangeText}
-                      text={buttonText === '' ? 'text' : buttonText} />
-                    <Button onClick={this.onReset} text="Reset" />
-                </View>
-                <Text style={styles.instructions}>
-                    Double tap R on your keyboard to reload,{'\n'}
-                    Shake or press menu button for dev menu
-                </Text>
+                <ScrollView>
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                </ScrollView>
             </View>
         );
     }
@@ -59,9 +55,7 @@ class Screen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: 'steelblue',
     },
     welcome: {
         fontSize: 20,
