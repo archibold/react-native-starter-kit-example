@@ -24,6 +24,8 @@ export default class Button extends React.Component {
 
         onCheck: React.PropTypes.func,
         onCheckIcon: React.PropTypes.string,
+        isActionPanelVisible: React.PropTypes.bool,
+        onChangeActionPanel: React.PropTypes.func,
     }
 
     static defaultProps = {
@@ -42,6 +44,7 @@ export default class Button extends React.Component {
 
     render() {
         const { describe,
+            isActionPanelVisible,
             fullName,
             typeOfPayment,
             price,
@@ -49,26 +52,49 @@ export default class Button extends React.Component {
             payDate,
             onCheck,
             onCheckIcon, paymentIcon } = this.props;
+        const { onChangeActionPanel } = this;
+        let actionPanelStyle = StyleSheet.create({});
+        if (isActionPanelVisible) {
+            actionPanelStyle = StyleSheet.create({
+                enabled: {
+                    opacity: 0.8,
+                },
+            });
+        }
+
+        const payDateString = payDate.toISOString().substring(0, 10);
 
         return (
             <TouchableOpacity
               style={styles.button}
-              activeOpacity={1} >
+              activeOpacity={1}
+              onPress={onChangeActionPanel}>
+                <View style={[styles.actionPanel, actionPanelStyle.enabled]}>
+                    <Text style={styles.actionPanelText}>EDIT</Text>
+                </View>
                 <View style={styles.icon}>
                     <Icon
                       name={paymentIcon}
                       size={50}
-                      color="#FF4500"
-                      />
+                      color="#FF4500" />
+                    <Text style={styles.information}>{payDateString}</Text>
+
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.information}>{payDate.toDateString()}</Text>
+
                     <Text style={styles.number}>{price} {currency}</Text>
                     <Text style={styles.fullname}>{fullName}</Text>
                     <Text style={styles.description}>{describe}</Text>
                 </View>
             </TouchableOpacity>
         );
+    }
+
+    onChangeActionPanel = () => {
+        const { isActionPanelVisible } = this.props;
+        const newIsActionPanelVisible = !isActionPanelVisible;
+
+        this.props.onChangeActionPanel(newIsActionPanelVisible);
     }
 }
 
@@ -108,5 +134,24 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 15,
         flexDirection: 'column',
+    },
+
+    actionPanel: {
+        position: 'absolute',
+        zIndex: 10,
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'black',
+        opacity: 0,
+
+    },
+    actionPanelText: {
+        fontSize: 50,
+        color: 'white',
     },
 });

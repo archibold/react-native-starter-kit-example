@@ -1,46 +1,48 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Screen from './Screen';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import TabBar from '../utils/TabBar';
+import PaymentList from './PaymentList';
+import Payment from './Payment';
+import PayerList from './PayerList';
 
 import {
-    ScrollView,
-    View,
-    Text,
+    Navigator,
 } from 'react-native';
-import ActionButton from 'react-native-action-button';
+
 class App extends React.Component {
+
+    static propTypes = {
+        dispatch: React.PropTypes.func,
+    }
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
-                <ScrollableTabView renderTabBar={() => (<TabBar />)}>
-                    <Screen tabLabel="check" />
-                    <ScrollView tabLabel="clock-o">
-                        <View>
-                            <Text>News</Text>
-                        </View>
-                    </ScrollView>
-                    <ScrollView tabLabel="hand-o-up">
-                        <View>
-                            <Text>News</Text>
-                        </View>
-                    </ScrollView>
-                    <ScrollView tabLabel="hand-o-down">
-                        <View>
-                            <Text>News</Text>
-                        </View>
-                    </ScrollView>
-                </ScrollableTabView>
-                <ActionButton
-                  buttonColor="#34495e"
-                  onPress={() => { console.log("hi")}} />
-            </View>
+            <Navigator
+              initialRoute={{ name: 'PayerList' }}
+              renderScene={(route, navigator) => {
+                  if (route.name === 'Main') {
+                      return (
+                          <PaymentList navigator={navigator} />
+                      );
+                  }
+
+                  if (route.name === 'Payment') {
+                      return (
+                          <Payment navigator={navigator} />
+                      );
+                  }
+                  if (route.name === 'PayerList') {
+                      return (
+                          <PayerList navigator={navigator} />
+                      );
+                  }
+                  return null;
+              }
+            }
+          />
         );
     }
 }
 
 
-export default connect(s => s.app)(App);
+export default connect(state => state)(App);

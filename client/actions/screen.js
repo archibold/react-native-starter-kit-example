@@ -2,24 +2,12 @@
  * micropayments Actions
  */
 
-export const INCREMENT = 'increment@screen';
-export const SET_VALUE = 'setValue@screen';
-export const RESET = 'reset@screen';
+export const CHANGE_ACTION_PANEL = 'onChangeActionPanel@screen';
 
-export function increment() {
+export function changeActionPanel(value) {
+    console.log(value);
     return {
-        type: INCREMENT,
-    };
-}
-
-export function setValue(value) {
-    return {
-        type: SET_VALUE,
+        type: CHANGE_ACTION_PANEL,
         payload: value,
-    };
-}
-export function reset() {
-    return {
-        type: RESET,
     };
 }

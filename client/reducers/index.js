@@ -8,10 +8,12 @@
 
 import { appReducer } from './app-reducer';
 import { screenReducer } from './screen-reducer';
+import { payerListReducer } from './payerList-reducer';
 /* import new reducer */
 
 export const reducers = {
     app: appReducer,
     screen: screenReducer,
+    payerList: payerListReducer,
     /* append new reducer */
 };
