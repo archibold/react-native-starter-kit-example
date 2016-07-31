@@ -63,6 +63,7 @@ class PayerList extends React.Component {
                 </View>
                 <View style={[styles.layer, styleAddPayer.addPayer]}>
                     <TextInput
+                      ref="input"
                       value={activePayer}
                       style={styles.input}
                       autoFocus={isAddPayer}
@@ -76,6 +77,7 @@ class PayerList extends React.Component {
     onPressActionBar = () => {
         const { dispatch } = this.props;
         dispatch(setAddNewPayer(true));
+        this.refs.input.focus();
         // navigator.pop();
     }
 

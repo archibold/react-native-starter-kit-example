@@ -10,7 +10,8 @@ export function setAddNewPayer(value) {
 export function addNewPayer() {
     return (dispatch, getState) => {
         const { activePayer, payerList } = getState().payerList;
-        const newPayerList = payerList.push(activePayer);
+        let newPayerList = [activePayer];
+        newPayerList = payerList.splice(0, 0, activePayer);
         dispatch(setAddNewPayerAction(newPayerList));
 
         // TODO maybe function reset?
