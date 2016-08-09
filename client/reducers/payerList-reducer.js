@@ -1,7 +1,7 @@
 import {
     SET_ADD_NEW_PAYER,
     SET_ACTIVE_PAYER,
-    SET_PAYER_LIST
+    SET_PAYER_LIST,
 } from '../actions/payerList-actions';
 
 export const INITIAL_STATE = {

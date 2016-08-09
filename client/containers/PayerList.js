@@ -3,12 +3,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
 
-import { setAddNewPayer, setActivePayer, addNewPayer } from '../services/payerList-service';
+import {
+    setAddNewPayer,
+    setActivePayer,
+    addNewPayer,
+    setPayer } from '../services/payerList-service';
 import {
     Text,
     View,
     StyleSheet,
     TextInput,
+    TouchableOpacity,
+    BackAndroid,
+    ScrollView,
 } from 'react-native';
 
 class PayerList extends React.Component {
@@ -20,8 +27,18 @@ class PayerList extends React.Component {
         payerList: React.PropTypes.array,
         dispatch: React.PropTypes.func,
     }
+    componentWillMount = () => {
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+            const { dispatch, isAddPayer } = this.props;
+            if (isAddPayer) {
+                dispatch(setAddNewPayer(false));
+            }
+            return false;
+        });
+    }
+
     render() {
-        const { onPressActionBar, onSubmitEditing, onChangeText } = this;
+        const { onPressActionBar, onSubmitEditing, onChangeText, onClickPayer } = this;
         const { isAddPayer, activePayer, payerList } = this.props;
 
         // TODO find better naming
@@ -34,11 +51,15 @@ class PayerList extends React.Component {
                 bottom: 0,
             };
         }
-        let payerListElement = payerList.map((o, i) =>{
+
+        let payerListElement = payerList.map((o, i) => {
             return (
-                <View key={i} style={styles.name}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  key={i} style={styles.name}
+                  onPress={() => { onClickPayer(o); }}>
                     <Text style={styles.nameText}>{o}</Text>
-                </View>
+                </TouchableOpacity>
             );
         }
         );
@@ -46,17 +67,9 @@ class PayerList extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1 }}>
-                    {payerListElement}
-                    <View style={styles.name}>
-                        <Text style={styles.nameText}>Olek Kowalski</Text>
-                    </View>
-                    <View style={styles.name}>
-                        <Text style={styles.nameText}>Olek Kowalski</Text>
-                    </View>
-                    <View style={styles.name}>
-                        <Text style={styles.nameText}>Olek Kowalski</Text>
-                    </View>
-
+                    <ScrollView>
+                        {payerListElement}
+                    </ScrollView>
                     <ActionButton
                       buttonColor="#34495e"
                       onPress={onPressActionBar} />
@@ -78,7 +91,6 @@ class PayerList extends React.Component {
         const { dispatch } = this.props;
         dispatch(setAddNewPayer(true));
         this.refs.input.focus();
-        // navigator.pop();
     }
 
     onSubmitEditing = () => {
@@ -89,6 +101,12 @@ class PayerList extends React.Component {
     onChangeText = (text) => {
         const { dispatch } = this.props;
         dispatch(setActivePayer(text));
+    }
+
+    onClickPayer = (name) => {
+        const { dispatch, navigator } = this.props;
+        dispatch(setPayer(name));
+        navigator.pop();
     }
 }
 

@@ -13,12 +13,13 @@ export default class Button extends React.Component {
 
     static propTypes = {
         paymentIcon: React.PropTypes.string,
-        describe: React.PropTypes.string,
-        fullName: React.PropTypes.string,
-        typeOfPayment: React.PropTypes.string,
-        price: React.PropTypes.number,
+        paymentIconColor: React.PropTypes.string,
+        description: React.PropTypes.string,
+        payer: React.PropTypes.string,
+        paymentType: React.PropTypes.string,
+        payment: React.PropTypes.string,
         currency: React.PropTypes.string,
-        payDate: React.PropTypes.object,
+        dateOfPayment: React.PropTypes.string,
         payBackDate: React.PropTypes.object,
         localization: React.PropTypes.string,
 
@@ -28,30 +29,31 @@ export default class Button extends React.Component {
         onChangeActionPanel: React.PropTypes.func,
     }
 
-    static defaultProps = {
-        paymentIcon: 'hand-o-up',
-        // TODO max 50 length
-        describe: 'Sum ipsum lore, Lorem ipsum ipsum lore Lorem, ipsum',
-        fullName: 'Stasiek Kolanko',
-        typeOfPayment: '',
-        currency: 'zł',
-        price: 30,
-        payDate: new Date(),
-        payBackDate: new Date(),
-        localization: '',
-        onCheck: () => {},
-    }
+    // static defaultProps = {
+    //     paymentIcon: 'hand-o-up',
+    //     // TODO max 50 length
+    //     description: 'Sum ipsum lore, Lorem ipsum ipsum lore Lorem, ipsum',
+    //     payer: 'Stasiek Kolanko',
+    //     paymentType: '',
+    //     currency: 'zł',
+    //     payment: '30',
+    //     dateOfPayment: new Date(),
+    //     payBackDate: new Date(),
+    //     localization: '',
+    //     onCheck: () => {},
+    // }
 
     render() {
-        const { describe,
+        const { description,
             isActionPanelVisible,
-            fullName,
-            typeOfPayment,
-            price,
+            payer,
+            paymentType,
+            payment,
             currency,
-            payDate,
+            dateOfPayment,
             onCheck,
-            onCheckIcon, paymentIcon } = this.props;
+            onCheckIcon, paymentIcon,
+            paymentIconColor } = this.props;
         const { onChangeActionPanel } = this;
         let actionPanelStyle = StyleSheet.create({});
         if (isActionPanelVisible) {
@@ -62,7 +64,7 @@ export default class Button extends React.Component {
             });
         }
 
-        const payDateString = payDate.toISOString().substring(0, 10);
+        const payDateString = dateOfPayment.substring(0, 10);
 
         return (
             <TouchableOpacity
@@ -76,15 +78,15 @@ export default class Button extends React.Component {
                     <Icon
                       name={paymentIcon}
                       size={50}
-                      color="#FF4500" />
+                      color="steelblue" />
                     <Text style={styles.information}>{payDateString}</Text>
 
                 </View>
                 <View style={styles.content}>
 
-                    <Text style={styles.number}>{price} {currency}</Text>
-                    <Text style={styles.fullname}>{fullName}</Text>
-                    <Text style={styles.description}>{describe}</Text>
+                    <Text style={styles.number}>{payment} {currency}</Text>
+                    <Text style={styles.fullname}>{payer}</Text>
+                    <Text style={styles.description}>{description}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     content: {
-        flex: 3,
+        flex: 2,
         alignSelf: 'stretch',
         margin: 5,
         marginLeft: 0,
@@ -127,7 +129,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     fullname: {
-        fontSize: 15,
+        fontWeight: 'bold',
+        fontSize: 20,
         flexDirection: 'column',
     },
 

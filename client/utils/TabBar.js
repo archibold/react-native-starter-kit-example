@@ -24,10 +24,10 @@ const DefaultTabBar = React.createClass({
 
     getDefaultProps() {
         return {
-            activeTextColor: 'steelblue',
-            inactiveTextColor: '#808080',
-            underlineColor: 'steelblue',
-            backgroundColor: null,
+            activeTextColor: '#ecf0f1',
+            inactiveTextColor: 'skyblue',
+            underlineColor: '#ecf0f1',
+            backgroundColor: 'steelblue',
             underlineHeight: 4,
         };
     },
@@ -84,10 +84,11 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     tabs: {
+
         height: 50,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        borderWidth: 1,
+        borderWidth: 0,
         borderTopWidth: 0,
         borderLeftWidth: 0,
         borderRightWidth: 0,

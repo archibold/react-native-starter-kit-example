@@ -10,12 +10,25 @@ import {
     Text,
     View,
     ScrollView,
+    BackAndroid,
 } from 'react-native';
 
 class PaymentList extends React.Component {
 
     static propTypes = {
         navigator: React.PropTypes.object,
+    }
+
+    componentWillMount = () => {
+        const { navigator } = this.props;
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+
+            if (navigator.getCurrentRoutes().length === 1) {
+                return false;
+            }
+            navigator.pop();
+            return true;
+        });
     }
 
     render() {
