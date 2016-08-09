@@ -2,18 +2,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
-
+import Payer from '../components/Payer';
 import {
     setAddNewPayer,
     setActivePayer,
     addNewPayer,
-    setPayer } from '../services/payerList-service';
+    setPayer,
+    removePayerAtIndex,
+} from '../services/payerList-service';
 import {
-    Text,
     View,
     StyleSheet,
     TextInput,
-    TouchableOpacity,
     BackAndroid,
     ScrollView,
 } from 'react-native';
@@ -38,7 +38,13 @@ class PayerList extends React.Component {
     }
 
     render() {
-        const { onPressActionBar, onSubmitEditing, onChangeText, onClickPayer } = this;
+        const {
+            onPressActionBar,
+            onSubmitEditing,
+            onChangeText,
+            onClickPayer,
+            onClickRemovePayer,
+        } = this;
         const { isAddPayer, activePayer, payerList } = this.props;
 
         // TODO find better naming
@@ -52,14 +58,13 @@ class PayerList extends React.Component {
             };
         }
 
-        let payerListElement = payerList.map((o, i) => {
+        let payerListElement = payerList.map((payer, index) => {
             return (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  key={i} style={styles.name}
-                  onPress={() => { onClickPayer(o); }}>
-                    <Text style={styles.nameText}>{o}</Text>
-                </TouchableOpacity>
+                <Payer
+                  key={index}
+                  name={payer}
+                  onClickPayer={() => { onClickPayer(payer); }}
+                  onClickRemove={() => { onClickRemovePayer(index); }} />
             );
         }
         );
@@ -108,6 +113,11 @@ class PayerList extends React.Component {
         dispatch(setPayer(name));
         navigator.pop();
     }
+
+    onClickRemovePayer = (index) => {
+        const { dispatch } = this.props;
+        dispatch(removePayerAtIndex(index));
+    }
 }
 
 const styles = StyleSheet.create({
@@ -129,11 +139,19 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
     },
     name: {
+        flexDirection: 'row',
         height: 75,
         justifyContent: 'center',
+        alignItems: 'center',
         margin: 5,
         backgroundColor: 'skyblue',
         paddingLeft: 25,
+    },
+    selectPayer: {
+        flex: 5,
+    },
+    selectEditPayer: {
+        flex: 1,
     },
     nameText: {
         fontSize: 25,

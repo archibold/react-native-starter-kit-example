@@ -17,11 +17,9 @@ function get(key, defaultValue = null) {
             if (value === null) {
                 resolve(defaultValue);
             } else {
-                console.log('value', value);
                 resolve(JSON.parse(value));
             }
         }).catch((e) => {
-            console.log('e', e)
             reject(e);
         });
     });

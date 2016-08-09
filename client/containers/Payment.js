@@ -76,7 +76,6 @@ class Payment extends React.Component {
             <View style={styles.container}>
                 <View style={styles.content}>
                     <TouchableOpacity
-                      activeOpacity={1}
                       style={styles.fullNameContent}
                       onPress={onClickPayer}>
                         <Text style={styles.fullname}>{payerName}</Text>
@@ -89,7 +88,6 @@ class Payment extends React.Component {
                           value={payment.toString()}
                           onChangeText={(value) => { onChangePayment(value); }}
                           placeholder="How many" />
-                        <Text style={styles.currency}>zł</Text>
                     </View>
                     <TextInput
                       style={styles.description}
@@ -103,7 +101,6 @@ class Payment extends React.Component {
                 </View>
                 <View style={styles.paymentTypeContainer}>
                     <TouchableOpacity
-                      activeOpacity={1}
                       style={[styles.paymentUp, loanActive.style]}
                       onPress={() => { onChangePaymentType(LOANED); }}>
                         <Icon
@@ -112,7 +109,6 @@ class Payment extends React.Component {
                           color={paymentType === LOANED? "steelblue" : "skyblue"} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      activeOpacity={1}
                       style={[styles.paymentDown, borrowActive.style]}
                       onPress={() => { onChangePaymentType(BORROWED); }}>
                         <Icon
@@ -167,7 +163,6 @@ const styles = StyleSheet.create({
     },
     paymentTypeContainer: {
         flexDirection: 'row',
-
         margin: 5,
         marginTop: 0,
     },
@@ -185,12 +180,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'steelblue',
     },
-    // card: {
-    //     flexDirection: 'row',
-    //     minHeight: 150,
-    //     backgroundColor: 'skyblue',
-    //     margin: 5,
-    // },
     icon: {
         flex: 1,
         margin: 5,

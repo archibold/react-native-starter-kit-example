@@ -2,14 +2,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Screen from './Screen';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import TabBar from '../utils/TabBar';
 import ActionButton from 'react-native-action-button';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
-    Text,
     View,
-    ScrollView,
     BackAndroid,
 } from 'react-native';
 
@@ -33,18 +29,19 @@ class PaymentList extends React.Component {
 
     render() {
         const { navigator } = this.props;
+
+        const actionButtonIcon = (
+            <Icon
+              name="credit-card"
+              color="white"
+              size={20} />
+        )
         return (
             <View style={{ flex: 1 }}>
-                <ScrollableTabView renderTabBar={() => (<TabBar />)}>
-                    <Screen tabLabel="check" />
-                    <ScrollView tabLabel="clock-o">
-                        <View>
-                            <Text>News</Text>
-                        </View>
-                    </ScrollView>
-                </ScrollableTabView>
+                <Screen tabLabel="check" />
                 <ActionButton
                   buttonColor="#34495e"
+                  icon={actionButtonIcon}
                   onPress={() => { navigator.push({ name: 'Payment' }); }} />
             </View>
         );

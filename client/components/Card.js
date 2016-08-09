@@ -14,6 +14,7 @@ export default class Button extends React.Component {
     static propTypes = {
         paymentIcon: React.PropTypes.string,
         paymentIconColor: React.PropTypes.string,
+        paymentBackIcon: React.PropTypes.string,
         description: React.PropTypes.string,
         payer: React.PropTypes.string,
         paymentType: React.PropTypes.string,
@@ -24,42 +25,40 @@ export default class Button extends React.Component {
         localization: React.PropTypes.string,
 
         onCheck: React.PropTypes.func,
+        onClickPayback: React.PropTypes.func,
         onCheckIcon: React.PropTypes.string,
-        isActionPanelVisible: React.PropTypes.bool,
-        onChangeActionPanel: React.PropTypes.func,
     }
 
-    // static defaultProps = {
-    //     paymentIcon: 'hand-o-up',
-    //     // TODO max 50 length
-    //     description: 'Sum ipsum lore, Lorem ipsum ipsum lore Lorem, ipsum',
-    //     payer: 'Stasiek Kolanko',
-    //     paymentType: '',
-    //     currency: 'zł',
-    //     payment: '30',
-    //     dateOfPayment: new Date(),
-    //     payBackDate: new Date(),
-    //     localization: '',
-    //     onCheck: () => {},
-    // }
+    componentWillMount = () => {
+        this.setState({});
+    }
 
     render() {
         const { description,
-            isActionPanelVisible,
             payer,
-            paymentType,
             payment,
             currency,
             dateOfPayment,
-            onCheck,
-            onCheckIcon, paymentIcon,
-            paymentIconColor } = this.props;
-        const { onChangeActionPanel } = this;
+            paymentIcon,
+            paymentIconColor,
+            paymentBackIcon,
+        } = this.props;
+        const {
+            onClickPayback,
+        } = this;
+        const {
+            editMode,
+        } = this.state;
+
+        const { onClickEditPayment } = this;
         let actionPanelStyle = StyleSheet.create({});
-        if (isActionPanelVisible) {
+        if (editMode) {
             actionPanelStyle = StyleSheet.create({
                 enabled: {
-                    opacity: 0.8,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                 },
             });
         }
@@ -67,46 +66,71 @@ export default class Button extends React.Component {
         const payDateString = dateOfPayment.substring(0, 10);
 
         return (
-            <TouchableOpacity
-              style={styles.button}
-              activeOpacity={1}
-              onPress={onChangeActionPanel}>
+            <View style={styles.cardContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={onClickEditPayment}>
+                    <View style={styles.icon}>
+                        <Icon
+                          name={paymentIcon}
+                          size={50}
+                          color={paymentIconColor} />
+                        <Text style={styles.information}>{payDateString}</Text>
+
+                    </View>
+                    <View style={styles.content}>
+
+                        <Text style={styles.number}>{payment} {currency}</Text>
+                        <Text style={styles.fullname}>{payer}</Text>
+                        <Text style={styles.description}>{description}</Text>
+                    </View>
+                </TouchableOpacity>
                 <View style={[styles.actionPanel, actionPanelStyle.enabled]}>
-                    <Text style={styles.actionPanelText}>EDIT</Text>
+                    <TouchableOpacity
+                      onPress={onClickPayback}
+                      style={styles.selectPayback} >
+                        <Icon
+                          name={paymentBackIcon}
+                          color="white"
+                          size={50} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={onClickEditPayment}
+                      style={styles.selectDone} >
+                        <Icon
+                          name="close"
+                          color="white"
+                          size={50} />
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.icon}>
-                    <Icon
-                      name={paymentIcon}
-                      size={50}
-                      color="steelblue" />
-                    <Text style={styles.information}>{payDateString}</Text>
-
-                </View>
-                <View style={styles.content}>
-
-                    <Text style={styles.number}>{payment} {currency}</Text>
-                    <Text style={styles.fullname}>{payer}</Text>
-                    <Text style={styles.description}>{description}</Text>
-                </View>
-            </TouchableOpacity>
+            </View>
         );
     }
 
-    onChangeActionPanel = () => {
-        const { isActionPanelVisible } = this.props;
-        const newIsActionPanelVisible = !isActionPanelVisible;
-
-        this.props.onChangeActionPanel(newIsActionPanelVisible);
+    onClickEditPayment = () => {
+        this.setState({ editMode: !this.state.editMode });
+    }
+    onClickPayback = () => {
+        const { onClickPayback } = this.props;
+        this.setState({ editMode: false });
+        onClickPayback();
     }
 }
 
 
 const styles = StyleSheet.create({
+    cardContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+        backgroundColor: 'skyblue',
+    },
     button: {
+        flex: 1,
         flexDirection: 'row',
         height: 150,
         backgroundColor: 'skyblue',
-        margin: 5,
     },
     icon: {
         flex: 1,
@@ -141,20 +165,24 @@ const styles = StyleSheet.create({
 
     actionPanel: {
         position: 'absolute',
-        zIndex: 10,
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0,
         flex: 1,
+        opacity: 0.8,
+        height: 150,
+        backgroundColor: 'black',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black',
-        opacity: 0,
-
     },
-    actionPanelText: {
-        fontSize: 50,
-        color: 'white',
+    selectDone: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        height: 150,
+    },
+    selectPayback: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        height: 150,
     },
 });

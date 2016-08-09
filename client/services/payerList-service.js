@@ -41,3 +41,19 @@ export function setPayer(payer) {
         dispatch(setPayerAction(payer));
     };
 }
+
+export function removePayerAtIndex(index) {
+    return (dispatch, getState) => {
+        const { payerList } = getState().payerList;
+        let newPayerList = [];
+        newPayerList = newPayerList.concat(payerList);
+        newPayerList.splice(index, 1);
+
+        dispatch(setPayerListAction(newPayerList));
+
+        // save to storage
+        storage.set('payerList', newPayerList).catch(() => {
+            // TODO catch some errors
+        });
+    };
+}
