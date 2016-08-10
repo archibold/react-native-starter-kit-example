@@ -11,7 +11,7 @@ import { App } from './client/containers/App';
 
 import { AppRegistry } from 'react-native';
 
-class AwesomeProject extends Component {
+class Micropayment extends Component {
     render() {
         return (
             <Main
@@ -21,4 +21,4 @@ class AwesomeProject extends Component {
     }
 }
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('Micropayment', () => Micropayment);
