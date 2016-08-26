@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class Button extends React.Component {
+export default class Card extends React.Component {
 
 
     static propTypes = {
@@ -19,14 +19,9 @@ export default class Button extends React.Component {
         payer: React.PropTypes.string,
         paymentType: React.PropTypes.string,
         payment: React.PropTypes.string,
-        currency: React.PropTypes.string,
         dateOfPayment: React.PropTypes.string,
-        payBackDate: React.PropTypes.object,
-        localization: React.PropTypes.string,
 
-        onCheck: React.PropTypes.func,
         onClickPayback: React.PropTypes.func,
-        onCheckIcon: React.PropTypes.string,
     }
 
     componentWillMount = () => {
@@ -37,20 +32,22 @@ export default class Button extends React.Component {
         const { description,
             payer,
             payment,
-            currency,
             dateOfPayment,
             paymentIcon,
             paymentIconColor,
             paymentBackIcon,
         } = this.props;
+
         const {
             onClickPayback,
         } = this;
+
         const {
             editMode,
         } = this.state;
 
         const { onClickEditPayment } = this;
+
         let actionPanelStyle = StyleSheet.create({});
         if (editMode) {
             actionPanelStyle = StyleSheet.create({
@@ -80,7 +77,7 @@ export default class Button extends React.Component {
                     </View>
                     <View style={styles.content}>
 
-                        <Text style={styles.number}>{payment} {currency}</Text>
+                        <Text style={styles.number}>{payment}</Text>
                         <Text style={styles.fullname}>{payer}</Text>
                         <Text style={styles.description}>{description}</Text>
                     </View>

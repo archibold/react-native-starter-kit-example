@@ -2,19 +2,20 @@ import React from 'react';
 
 import {
     StyleSheet,
-    Text,
     TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Button extends React.Component {
 
 
     static propTypes = {
-        text: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.number,
-        ]),
+        isActive: React.PropTypes.bool,
+        iconName: React.PropTypes.string,
+
         onClick: React.PropTypes.func,
+
+
     }
 
     static defaultProps = {
@@ -22,32 +23,34 @@ export default class Button extends React.Component {
     }
 
     render() {
-        const { onClick, text } = this.props;
+        const {
+            onClick,
+            isActive,
+            iconName,
+        } = this.props;
 
         return (
             <TouchableOpacity
-              style={styles.button}
-              onPress={onClick}
-              activeOpacity={1} >
-                <Text style={styles.buttonText}>
-                    {text}
-                </Text>
+              style={[styles.payment, isActive ? styles.active : null]}
+              onPress={onClick}>
+                <Icon
+                  name={iconName}
+                  size={50}
+                  color={isActive ? 'steelblue' : 'skyblue'} />
             </TouchableOpacity>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    button: {
-        height: 100,
-        width: 100,
+    payment: {
+        flex: 1,
+        padding: 15,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'steelblue',
-        margin: 5,
     },
-    buttonText: {
-        fontSize: 20,
-        color: 'white',
+    active: {
+        backgroundColor: 'skyblue',
     },
 });

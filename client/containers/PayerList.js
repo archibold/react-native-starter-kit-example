@@ -1,37 +1,43 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import ActionButton from 'react-native-action-button';
-import Payer from '../components/Payer';
-import {
-    setAddNewPayer,
-    setActivePayer,
-    addNewPayer,
-    setPayer,
-    removePayerAtIndex,
-} from '../services/payerList-service';
+
+// react-native
 import {
     View,
     StyleSheet,
-    TextInput,
     BackAndroid,
     ScrollView,
 } from 'react-native';
+
+// components
+import Payer from '../components/Payer';
+import NewPayer from '../components/NewPayer';
+import ActionButton from 'react-native-action-button';
+
+// services & utils
+import {
+    setActivePayer,
+    addNewPayer,
+    pickPayer,
+    removePayerAtIndex,
+} from '../services/payerList-service';
 
 class PayerList extends React.Component {
 
     static propTypes = {
         navigator: React.PropTypes.object,
-        isAddPayer: React.PropTypes.bool,
         activePayer: React.PropTypes.string,
         payerList: React.PropTypes.array,
         dispatch: React.PropTypes.func,
     }
+
+    // Try to move it to containers/App.js
     componentWillMount = () => {
         BackAndroid.addEventListener('hardwareBackPress', () => {
-            const { dispatch, isAddPayer } = this.props;
-            if (isAddPayer) {
-                dispatch(setAddNewPayer(false));
+            const { dispatch, activePayer } = this.props;
+            if (activePayer !== null) {
+                dispatch(setActivePayer(null));
             }
             return false;
         });
@@ -45,28 +51,16 @@ class PayerList extends React.Component {
             onClickPayer,
             onClickRemovePayer,
         } = this;
-        const { isAddPayer, activePayer, payerList } = this.props;
 
-        // TODO find better naming
-        const styleAddPayer = StyleSheet.create({});
-        if (isAddPayer) {
-            styleAddPayer.addPayer = {
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-            };
-        }
+        const { activePayer, payerList } = this.props;
 
-        let payerListElement = payerList.map((payer, index) => {
-            return (
-                <Payer
-                  key={index}
-                  name={payer}
-                  onClickPayer={() => { onClickPayer(payer); }}
-                  onClickRemove={() => { onClickRemovePayer(index); }} />
-            );
-        }
+        let payerListElement = payerList.map((payer, index) => (
+            <Payer
+              key={index}
+              name={payer}
+              onClickPayer={() => { onClickPayer(payer); }}
+              onClickRemove={() => { onClickRemovePayer(index); }} />
+            )
         );
 
         return (
@@ -79,29 +73,23 @@ class PayerList extends React.Component {
                       buttonColor="#34495e"
                       onPress={onPressActionBar} />
                 </View>
-                <View style={[styles.layer, styleAddPayer.addPayer]}>
-                    <TextInput
-                      ref="input"
-                      value={activePayer}
-                      style={styles.input}
-                      autoFocus={isAddPayer}
-                      onChangeText={(text => { onChangeText(text); })}
-                      onSubmitEditing={onSubmitEditing} />
-                </View>
+                <NewPayer
+                  onChangeText={(text => { onChangeText(text); })}
+                  onSubmitEditing={onSubmitEditing}
+                  name={activePayer}
+                  isVisible={activePayer !== null} />
             </View>
         );
     }
 
     onPressActionBar = () => {
         const { dispatch } = this.props;
-        dispatch(setAddNewPayer(true));
-        this.refs.input.focus();
+        dispatch(setActivePayer(''));
     }
 
     onSubmitEditing = () => {
         const { dispatch } = this.props;
         dispatch(addNewPayer());
-        dispatch(setAddNewPayer(false));
     }
     onChangeText = (text) => {
         const { dispatch } = this.props;
@@ -110,7 +98,7 @@ class PayerList extends React.Component {
 
     onClickPayer = (name) => {
         const { dispatch, navigator } = this.props;
-        dispatch(setPayer(name));
+        dispatch(pickPayer(name));
         navigator.pop();
     }
 
@@ -124,37 +112,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'steelblue',
-    },
-
-    layer: {
-        flex: 1,
-        opacity: 0.8,
-        position: 'absolute',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-    },
-    input: {
-        fontSize: 25,
-        alignSelf: 'stretch',
-    },
-    name: {
-        flexDirection: 'row',
-        height: 75,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 5,
-        backgroundColor: 'skyblue',
-        paddingLeft: 25,
-    },
-    selectPayer: {
-        flex: 5,
-    },
-    selectEditPayer: {
-        flex: 1,
-    },
-    nameText: {
-        fontSize: 25,
     },
 });
 

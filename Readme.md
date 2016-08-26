@@ -1,19 +1,25 @@
-# React Native starter kit
+# Sample React Native Mobile Application
+## About app
+Sample application to keep your micro-payments in one place.
+
 ## Inside
 
 - react-native
-- redux
+- redux/flux
 - catalog structure
-- example how to use actions, components, containsers,  reducers and services
+- example how to use actions, components, containers, reducers and services
+- keep data in the mobile storage
+- transitions from react-native
 - linter rules
 
-## Instalation
-`git clone https://github.com/archibold/react-native-starter-kit.git`
 
+## Instalation
 `npm install`
 
 
 ## How to run
+
+connect your mobile device to USB
 
 `npm start`
 

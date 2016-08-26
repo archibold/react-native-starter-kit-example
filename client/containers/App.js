@@ -1,17 +1,20 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import PaymentList from './PaymentList';
-import Payment from './Payment';
-import PayerList from './PayerList';
 
+// react-native
 import {
     Navigator,
 } from 'react-native';
 
-import { setPayerList as setPayerListAction } from '../actions/payerList-actions';
-import { setPaymentList as setPaymentListAction } from '../actions/paymentList-actions';
-import storage from '../utils/Storage';
+// conteners
+import PaymentList from './PaymentList';
+import Payment from './Payment';
+import PayerList from './PayerList';
+
+
+// services & utils
+import { init } from '../services/app-service';
 
 class App extends React.Component {
 
@@ -21,12 +24,7 @@ class App extends React.Component {
 
     componentWillMount = () => {
         const { dispatch } = this.props;
-        storage.get('payerList', []).then((payerList) => {
-            dispatch(setPayerListAction(payerList));
-        });
-        storage.get('paymentList', []).then((paymentList) => {
-            dispatch(setPaymentListAction(paymentList));
-        });
+        dispatch(init());
     }
 
     render() {
@@ -45,6 +43,7 @@ class App extends React.Component {
                           <Payment navigator={navigator} />
                       );
                   }
+
                   if (route.name === 'PayerList') {
                       return (
                           <PayerList navigator={navigator} />

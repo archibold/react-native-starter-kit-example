@@ -1,30 +1,36 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { setPayment, setDescription, setPaymentType } from '../services/payment-service';
-import {
-    addPayment,
-    } from '../services/paymentList-service';
 
+// react-native
+import {
+    StyleSheet,
+    View,
+} from 'react-native';
+
+// components
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
+import Button from '../components/Button';
+import NewPayment from '../components/NewPayment';
+
+// services & utils
+import {
+    setPayment,
+    setDescription,
+    setPaymentType,
+} from '../services/payment-service';
+import {
+    addPayment,
+} from '../services/paymentList-service';
 
 import {
     LOANED,
     BORROWED,
 } from '../utils/TypeOfPayment';
 
-import dismissKeyboard from 'react-native-dismiss-keyboard';
-
-import {
-    StyleSheet,
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    BackAndroid,
-} from 'react-native';
 
 class Payment extends React.Component {
 
@@ -38,8 +44,12 @@ class Payment extends React.Component {
     }
 
     render() {
-        // TODO move navigator action up! hurry!
-        const { payerName, payment, description, paymentType } = this.props;
+        const {
+            payerName,
+            payment,
+            description,
+            paymentType } = this.props;
+
         const {
             onClickPayer,
             onChangePayment,
@@ -48,75 +58,38 @@ class Payment extends React.Component {
             onAddNewPayment,
         } = this;
 
-        let loanActive = StyleSheet.create({});
-        let borrowActive = StyleSheet.create({});
-        if (paymentType === LOANED) {
-            loanActive = StyleSheet.create({
-                style: {
-                    backgroundColor: 'skyblue',
-                },
-            });
-        }
-
-        if (paymentType === BORROWED) {
-            borrowActive = StyleSheet.create({
-                style: {
-                    backgroundColor: 'skyblue',
-                },
-            });
-        }
-
         const actionButtonIcon = (
             <Icon
               name="check"
               size={20}
               color="white" />
         );
+
         return (
             <View style={styles.container}>
-                <View style={styles.content}>
-                    <TouchableOpacity
-                      style={styles.fullNameContent}
-                      onPress={onClickPayer}>
-                        <Text style={styles.fullname}>{payerName}</Text>
-                    </TouchableOpacity>
-                    <View style={styles.price}>
-                        <TextInput
-                          style={styles.number}
-                          autoFocus
-                          keyboardType="numeric"
-                          value={payment.toString()}
-                          onChangeText={(value) => { onChangePayment(value); }}
-                          placeholder="How many" />
-                    </View>
-                    <TextInput
-                      style={styles.description}
-                      value={description}
-                      placeholder="for what"
-                      onChangeText={(value) => { onChangeDescription(value); }} />
-                  <ActionButton
-                      icon={actionButtonIcon}
-                      buttonColor="#34495e"
-                      onPress={onAddNewPayment} />
-                </View>
+                <NewPayment
+                  onClickPayer={onClickPayer}
+                  onChangePrice={(value) => { onChangePayment(value); }}
+                  onChangeDescription={(value) => { onChangeDescription(value); }}
+
+                  payerName={payerName}
+                  payment={payment}
+                  description={description}
+                />
                 <View style={styles.paymentTypeContainer}>
-                    <TouchableOpacity
-                      style={[styles.paymentUp, loanActive.style]}
-                      onPress={() => { onChangePaymentType(LOANED); }}>
-                        <Icon
-                          name="hand-o-up"
-                          size={50}
-                          color={paymentType === LOANED? "steelblue" : "skyblue"} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.paymentDown, borrowActive.style]}
-                      onPress={() => { onChangePaymentType(BORROWED); }}>
-                        <Icon
-                          name="hand-o-down"
-                          size={50}
-                          color={paymentType === BORROWED? "steelblue": "skyblue"} />
-                    </TouchableOpacity>
+                    <Button
+                      isActive={paymentType === LOANED}
+                      iconName="hand-o-up"
+                      onClick={() => { onChangePaymentType(LOANED); }} />
+                    <Button
+                      isActive={paymentType === BORROWED}
+                      iconName="hand-o-down"
+                      onClick={() => { onChangePaymentType(BORROWED); }} />
                 </View>
+                <ActionButton
+                  icon={actionButtonIcon}
+                  buttonColor="#34495e"
+                  onPress={onAddNewPayment} />
                 <KeyboardSpacer />
             </View>
         );
@@ -128,13 +101,13 @@ class Payment extends React.Component {
         navigator.push({ name: 'PayerList' });
     }
 
-    onChangeDescription = (value) => {
+    onChangeDescription = (description) => {
         const { dispatch } = this.props;
-        dispatch(setDescription(value));
+        dispatch(setDescription(description));
     }
-    onChangePayment = (value) => {
+    onChangePayment = (payment) => {
         const { dispatch } = this.props;
-        dispatch(setPayment(value));
+        dispatch(setPayment(payment));
     }
     onChangePaymentType = (paymentType) => {
         const { dispatch } = this.props;
@@ -153,69 +126,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'steelblue',
     },
-    content: {
-        backgroundColor: 'skyblue',
-        alignSelf: 'stretch',
-        margin: 5,
-        paddingTop: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-    },
     paymentTypeContainer: {
         flexDirection: 'row',
         margin: 5,
         marginTop: 0,
-    },
-    paymentDown: {
-        flex: 1,
-        padding: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'steelblue',
-    },
-    paymentUp: {
-        flex: 1,
-        padding: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'steelblue',
-    },
-    icon: {
-        flex: 1,
-        margin: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    information: {
-        flexDirection: 'column',
-        fontSize: 15,
-    },
-    price: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    number: {
-        fontSize: 25,
-        width: 75,
-        flex: 1,
-    },
-    currency: {
-        fontSize: 25,
-        flex: 2,
-    },
-    fullNameContent: {
-        paddingBottom: 10,
-        borderBottomWidth: 1,
-    },
-    fullname: {
-        fontSize: 25,
-        flexDirection: 'column',
-    },
-    description: {
-        fontSize: 25,
-        borderBottomWidth: 0,
-        flexDirection: 'column',
     },
 });
 

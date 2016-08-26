@@ -6,16 +6,12 @@
  * if you want/need to disable a reducer just comment it out in the exported object.
  */
 
-import { appReducer } from './app-reducer';
-import { screenReducer } from './screen-reducer';
 import { payerListReducer } from './payerList-reducer';
 import { paymentReducer } from './payment-reducer';
 import { paymentListReducer } from './paymentList-reducer';
 /* import new reducer */
 
 export const reducers = {
-    app: appReducer,
-    screen: screenReducer,
     payerList: payerListReducer,
     payment: paymentReducer,
     paymentList: paymentListReducer,

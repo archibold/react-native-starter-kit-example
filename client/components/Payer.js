@@ -27,16 +27,18 @@ export default class Payer extends React.Component {
             name,
             onClickPayer,
         } = this.props;
+
         const {
             onClickEditPayer,
             onClickRemovePayer,
         } = this;
+
         const {
             editMode,
         } = this.state;
 
 
-        // TODO find better naming
+        // TODO look for better naming
         const styleEditMode = StyleSheet.create({});
         if (editMode) {
             styleEditMode.editMode = {
@@ -57,28 +59,26 @@ export default class Payer extends React.Component {
                 <TouchableOpacity
                   style={styles.selectEditPayer}
                   onPress={onClickEditPayer}>
-                  <Icon
-                    name="ellipsis-v"
-                    size={20} />
+                    <Icon
+                      name="ellipsis-v"
+                      size={20} />
                 </TouchableOpacity>
                 <View style={[styles.layer, styleEditMode.editMode]}>
-                    <View style={styles.layerContainer}>
-                    </View>
                     <TouchableOpacity
-                        style={styles.selectRemove}
-                        onPress={onClickRemovePayer}>
+                      style={styles.selectRemove}
+                      onPress={onClickRemovePayer}>
                         <Icon
-                            name="trash"
-                            color="white"
-                            size={20} />
+                          name="trash"
+                          color="white"
+                          size={20} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.selectDone}
-                        onPress={onClickEditPayer}>
+                      style={styles.selectDone}
+                      onPress={onClickEditPayer}>
                         <Icon
-                            name="close"
-                            color="white"
-                            size={20} />
+                          name="close"
+                          color="white"
+                          size={20} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -125,9 +125,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingLeft: 25,
-    },
-    layerContainer: {
-        flex: 4,
     },
     selectDone: {
         justifyContent: 'center',
